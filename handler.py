@@ -19,7 +19,7 @@ def save_data_if_base64(data_input, temp_dir, output_filename):
     if not isinstance(data_input, str):
         return data_input
 
-
+    # URL 형식인지 확인 (http:// 또는 https://로 시작)
     if data_input.startswith('http://') or data_input.startswith('https://'):
         try:
             # 임시 파일명 생성 (원본 파일 확장자 유지 시도)
@@ -145,12 +145,12 @@ def handler(job):
         # 작업 디렉토리를 /MultiTalk로 설정하고 절대 경로 사용
         command = [
             'python', '/MultiTalk/generate_multitalk.py',
-            '--ckpt_dir', '/runpod-volume/multitalk_weights/Wan2.1-I2V-14B-480P',
-            '--wav2vec_dir', '/runpod-volume/multitalk_weights/chinese-wav2vec2-base',
+            '--ckpt_dir', '/MultiTalk/weights/Wan2.1-I2V-14B-480P',
+            '--wav2vec_dir', '/MultiTalk/weights/chinese-wav2vec2-base',
             '--input_json', input_json_path,
             '--quant', 'int8',
-            '--quant_dir', '/runpod-volume/multitalk_weights/MeiGen-MultiTalk',
-            '--lora_dir', '/runpod-volume/multitalk_weights/MeiGen-MultiTalk/quant_models/quant_model_int8_FusionX.safetensors',
+            '--quant_dir', '/MultiTalk/weights/MeiGen-MultiTalk',
+            '--lora_dir', '/MultiTalk/weights/MeiGen-MultiTalk/quant_models/quant_model_int8_FusionX.safetensors',
             '--sample_text_guide_scale', str(job_input.get("sample_text_guide_scale", 1.0)),
             '--use_teacache', # 플래그 인자는 값 없이 이름만 추가
             '--sample_audio_guide_scale', str(job_input.get("sample_audio_guide_scale", 2.0)),
