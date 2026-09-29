@@ -86,6 +86,9 @@ def handler(job):
     """
     job_input = job.get("input", {})
 
+    if job_input.get("ping"):
+        return {"status": "ok", "message": "handler alive"}
+
     # 각 job에 대한 고유한 임시 작업 폴더 생성
     task_id = f"task_{uuid.uuid4()}"
     os.makedirs(task_id, exist_ok=True)
