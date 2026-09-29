@@ -112,6 +112,7 @@ def handler(job):
             audio_paths[key] = save_data_if_base64(audio_data, task_id, f"input_audio_{key}.wav")
 
         audio_type = job_input.get("audio_type")
+        bbox = job_input.get("bbox")
 
         if not all([prompt, image_path, audio_paths]):
             return {"error": "필수 입력값(prompt, image_path, audio_paths)이 누락되었습니다."}
@@ -126,6 +127,8 @@ def handler(job):
         # audio_type 값이 있는 경우에만 딕셔너리에 추가합니다.
         if audio_type:
             input_data_for_script["audio_type"] = audio_type
+        if bbox:
+            input_data_for_script["bbox"] = bbox
         
         input_json_path = os.path.abspath(os.path.join(task_id, "input.json")) # ✨ 핵심 수정 부분
         with open(input_json_path, 'w', encoding='utf-8') as f:
