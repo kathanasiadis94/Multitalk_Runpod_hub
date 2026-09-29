@@ -19,7 +19,7 @@ def save_data_if_base64(data_input, temp_dir, output_filename):
     if not isinstance(data_input, str):
         return data_input
 
-    # URL 형식인지 확인 (http:// 또는 https://로 시작)
+
     if data_input.startswith('http://') or data_input.startswith('https://'):
         try:
             # 임시 파일명 생성 (원본 파일 확장자 유지 시도)
