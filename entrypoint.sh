@@ -11,4 +11,3 @@ ln -s /runpod-volume/multitalk_weights /MultiTalk/weights
 echo ">>> Starting application..."
 cd /
 python handler.py
-
