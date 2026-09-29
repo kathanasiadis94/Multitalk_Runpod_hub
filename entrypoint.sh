@@ -3,17 +3,12 @@ set -e
 
 VOL=/runpod-volume/multitalk_weights
 
-# Πλήρως offline: καμία σύνδεση με το Hugging Face Hub
-export HF_HUB_OFFLINE=1
-export TRANSFORMERS_OFFLINE=1
 export HF_HUB_DISABLE_PROGRESS_BARS=1
-unset HF_HUB_ENABLE_HF_TRANSFER
 
 echo ">>> DIAG: τι βλέπει ο worker"
 ls -la /runpod-volume 2>&1 | head -20 || true
 echo "mount:"; mount | grep -i runpod || echo "(κανένα mount με runpod)"
 
-# Έλεγχος volume (χωρίς exit, ώστε να περνάει το build test pod)
 VOL_OK=1
 for d in Wan2.1-I2V-14B-480P chinese-wav2vec2-base MeiGen-MultiTalk; do
   if [ ! -d "$VOL/$d" ]; then
@@ -23,7 +18,11 @@ for d in Wan2.1-I2V-14B-480P chinese-wav2vec2-base MeiGen-MultiTalk; do
 done
 
 if [ "$VOL_OK" = "1" ]; then
-  echo ">>> Linking weights from Network Volume..."
+  echo ">>> Volume βρέθηκε: offline mode + linking weights"
+  export HF_HUB_OFFLINE=1
+  export TRANSFORMERS_OFFLINE=1
+  unset HF_HUB_ENABLE_HF_TRANSFER
+
   rm -rf /MultiTalk/weights
   ln -sfn "$VOL" /MultiTalk/weights
 
@@ -39,7 +38,8 @@ if [ "$VOL_OK" = "1" ]; then
     if [ -f "/MultiTalk/weights/$f" ]; then echo "OK   $f"; else echo "MISSING $f"; fi
   done
 else
-  echo ">>> WARNING: το volume ΔΕΝ είναι διαθέσιμο. Δεν αγγίζω το /MultiTalk/weights."
+  echo ">>> WARNING: το volume ΔΕΝ είναι διαθέσιμο (test pod;). Online mode, δεν αγγίζω το /MultiTalk/weights."
+  export HF_HUB_ENABLE_HF_TRANSFER=1
 fi
 
 echo ">>> Starting application..."
