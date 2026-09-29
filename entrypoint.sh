@@ -41,3 +41,4 @@ done
 echo ">>> Starting application..."
 cd /
 exec python -u handler.py
+
