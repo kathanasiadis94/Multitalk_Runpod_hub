@@ -145,12 +145,12 @@ def handler(job):
         # 작업 디렉토리를 /MultiTalk로 설정하고 절대 경로 사용
         command = [
             'python', '/MultiTalk/generate_multitalk.py',
-            '--ckpt_dir', '/MultiTalk/weights/Wan2.1-I2V-14B-480P',
-            '--wav2vec_dir', '/MultiTalk/weights/chinese-wav2vec2-base',
+            '--ckpt_dir', '/runpod-volume/multitalk_weights/Wan2.1-I2V-14B-480P',
+            '--wav2vec_dir', '/runpod-volume/multitalk_weights/chinese-wav2vec2-base',
             '--input_json', input_json_path,
             '--quant', 'int8',
-            '--quant_dir', '/MultiTalk/weights/MeiGen-MultiTalk',
-            '--lora_dir', '/MultiTalk/weights/MeiGen-MultiTalk/quant_models/quant_model_int8_FusionX.safetensors',
+            '--quant_dir', '/runpod-volume/multitalk_weights/MeiGen-MultiTalk',
+            '--lora_dir', '/runpod-volume/multitalk_weights/MeiGen-MultiTalk/quant_models/quant_model_int8_FusionX.safetensors',
             '--sample_text_guide_scale', str(job_input.get("sample_text_guide_scale", 1.0)),
             '--use_teacache', # 플래그 인자는 값 없이 이름만 추가
             '--sample_audio_guide_scale', str(job_input.get("sample_audio_guide_scale", 2.0)),
